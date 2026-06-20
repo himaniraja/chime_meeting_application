@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
 import '../../core/constants/app_constants.dart';
 import '../../core/errors/exceptions.dart';
@@ -25,7 +26,7 @@ class MeetingRemoteDataSourceImpl implements MeetingRemoteDataSource {
         ),
       );
 
-      print('[API_CREATE] Response: ${response.data}');
+      debugPrint('[API_CREATE] Response: ${response.data}');
 
       if (response.statusCode == 200 && response.data['status'] == 'success') {
         return MeetingSessionModel.fromJson(response.data['data']);
@@ -34,9 +35,9 @@ class MeetingRemoteDataSourceImpl implements MeetingRemoteDataSource {
             response.data['message'] ?? 'Failed to create meeting');
       }
     } on DioException catch (e) {
-      print('[API_CREATE] DioException: ${e.type}');
-      print('[API_CREATE] Message: ${e.message}');
-      print('[API_CREATE] Response: ${e.response?.data}');
+      debugPrint('[API_CREATE] DioException: ${e.type}');
+      debugPrint('[API_CREATE] Message: ${e.message}');
+      debugPrint('[API_CREATE] Response: ${e.response?.data}');
       throw ServerException(e.message ?? 'Network error');
     }
   }
@@ -44,8 +45,8 @@ class MeetingRemoteDataSourceImpl implements MeetingRemoteDataSource {
   @override
   Future<MeetingSessionModel> joinAsClient(String meetingId) async {
     try {
-      print('[API_CLIENT] Joining as client...');
-      print('[API_CLIENT] Meeting ID being used: $meetingId');
+      debugPrint('[API_CLIENT] Joining as client...');
+      debugPrint('[API_CLIENT] Meeting ID being used: $meetingId');
 
       final response = await dio.post(
         '/api/meetings',
@@ -58,19 +59,19 @@ class MeetingRemoteDataSourceImpl implements MeetingRemoteDataSource {
         ),
       );
 
-      print('[API_CLIENT] Response status: ${response.statusCode}');
-      print('[API_CLIENT] Full response: ${response.data}');
+      debugPrint('[API_CLIENT] Response status: ${response.statusCode}');
+      debugPrint('[API_CLIENT] Full response: ${response.data}');
 
       if (response.statusCode == 200 && response.data['status'] == 'success') {
         final session = MeetingSessionModel.fromJson(response.data['data']);
-        print('[API_CLIENT] Parsed meeting ID: ${session.meeting.meetingId}');
-        print(
+        debugPrint('[API_CLIENT] Parsed meeting ID: ${session.meeting.meetingId}');
+        debugPrint(
             '[API_CLIENT] Signaling URL: "${session.meeting.mediaPlacement.signalingUrl}"');
-        print(
+        debugPrint(
             '[API_CLIENT] Audio Host URL: "${session.meeting.mediaPlacement.audioHostUrl}"');
 
         if (session.meeting.mediaPlacement.signalingUrl.isEmpty) {
-          print('[API_CLIENT] WARNING: Signaling URL is EMPTY!');
+          debugPrint('[API_CLIENT] WARNING: Signaling URL is EMPTY!');
         }
 
         return session;
@@ -79,8 +80,8 @@ class MeetingRemoteDataSourceImpl implements MeetingRemoteDataSource {
             response.data['message'] ?? 'Failed to join meeting');
       }
     } on DioException catch (e) {
-      print('[API_CLIENT] DioException: ${e.type}');
-      print('[API_CLIENT] Message: ${e.message}');
+      debugPrint('[API_CLIENT] DioException: ${e.type}');
+      debugPrint('[API_CLIENT] Message: ${e.message}');
       throw ServerException(e.message ?? 'Network error');
     }
   }
@@ -88,7 +89,7 @@ class MeetingRemoteDataSourceImpl implements MeetingRemoteDataSource {
   @override
   Future<MeetingSessionModel> rejoinAsAgent(String meetingId) async {
     try {
-      print(
+      debugPrint(
           '[API_AGENT_REJOIN] Rejoining as agent with meeting_id: $meetingId');
 
       final response = await dio.post(
@@ -102,7 +103,7 @@ class MeetingRemoteDataSourceImpl implements MeetingRemoteDataSource {
         ),
       );
 
-      print('[API_AGENT_REJOIN] Response: ${response.data}');
+      debugPrint('[API_AGENT_REJOIN] Response: ${response.data}');
 
       if (response.statusCode == 200 && response.data['status'] == 'success') {
         return MeetingSessionModel.fromJson(response.data['data']);
@@ -111,8 +112,8 @@ class MeetingRemoteDataSourceImpl implements MeetingRemoteDataSource {
             response.data['message'] ?? 'Failed to rejoin meeting');
       }
     } on DioException catch (e) {
-      print('[API_AGENT_REJOIN] DioException: ${e.type}');
-      print('[API_AGENT_REJOIN] Message: ${e.message}');
+      debugPrint('[API_AGENT_REJOIN] DioException: ${e.type}');
+      debugPrint('[API_AGENT_REJOIN] Message: ${e.message}');
       throw ServerException(e.message ?? 'Network error');
     }
   }

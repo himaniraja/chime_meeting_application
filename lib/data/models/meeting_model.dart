@@ -76,7 +76,7 @@ class MediaPlacementModel extends MediaPlacement {
 }
 
 class MeetingFeaturesModel extends MeetingFeatures {
-  const MeetingFeaturesModel({required AudioFeatureModel audio}) : super(audio: audio);
+  const MeetingFeaturesModel({required AudioFeatureModel super.audio});
 
   factory MeetingFeaturesModel.fromJson(Map<String, dynamic> json) {
     return MeetingFeaturesModel(
@@ -92,7 +92,7 @@ class MeetingFeaturesModel extends MeetingFeatures {
 }
 
 class AudioFeatureModel extends AudioFeature {
-  const AudioFeatureModel({required String echoReduction}) : super(echoReduction: echoReduction);
+  const AudioFeatureModel({required super.echoReduction});
 
   factory AudioFeatureModel.fromJson(Map<String, dynamic> json) {
     return AudioFeatureModel(

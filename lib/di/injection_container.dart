@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import '../data/datasources/meeting_remote_datasource.dart';
@@ -32,7 +33,7 @@ Future<void> init() async {
     () => MeetingRemoteDataSourceImpl(dio: sl()),
   );
 
-  print(AppConstants.baseUrl);
+  debugPrint(AppConstants.baseUrl);
   // External
   sl.registerLazySingleton(() {
     final dio = Dio(BaseOptions(
